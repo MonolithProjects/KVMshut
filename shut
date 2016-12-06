@@ -3,8 +3,8 @@
 #title           :KVM Shut
 #description     :This script will shutdown all running KVM VMs before the host shutdown/reboot. 
 #author          :Michal Muransky
-#date            :05-Dec-2016
-version=1.1
+#date            :06-Dec-2016
+version=1.1.1
 
 
 ### VARIABLES: ##############################
@@ -51,7 +51,6 @@ shut(){
 		COUNT=0
 		echo " "
 		while [ "$COUNT" -lt "$TIMEOUT" ]; do
-			VMSTATE=$(virsh --connect qemu:///system domstate $ACTIVEVM )
 			echo -en "\e[0K\r Shutting down the $ACTIVEVM [PROCESSING   ]"
 			if [ "$VMSTATE" == "running" ]; then
 				virsh --connect qemu:///system shutdown $ACTIVEVM > /dev/null
@@ -71,6 +70,7 @@ shut(){
 		if [ "$VMSTATE" == "running" ]; then
 			virsh --connect qemu:///system destroy $ACTIVEVM > /dev/null
 			echo -e "\e[0K\r Shutting down the $ACTIVEVM [FORCED]        "
+			sleep 0.5
 		fi
 	done
     fi
@@ -90,7 +90,6 @@ lastone() {
                 COUNT=0
                 echo " "
                 while [ "$COUNT" -lt "$TIMEOUT" ]; do
-                        VMSTATE=$(virsh --connect qemu:///system domstate $LASTONE )
                         echo -en "\e[0K\r Shutting down the $LASTONE [PROCESSING   ]"
                         if [ "$VMSTATE" == "running" ]; then
                                 virsh --connect qemu:///system shutdown $ACTIVEVM > /dev/null
@@ -110,6 +109,7 @@ lastone() {
                 if [ "$VMSTATE" == "running" ]; then
                         virsh --connect qemu:///system destroy $ACTIVEVM > /dev/null
                         echo -e "\e[0K\r Shutting down the $ACTIVEVM [FORCED]        "
+			sleep 0.5
                 fi
 
 	fi
