@@ -4,7 +4,7 @@
 #description     :This script will shutdown all running KVM VMs before the host shutdown/reboot. 
 #author          :Michal Muransky
 #date            :07-Dec-2016
-version=1.1.2
+version=1.1.3
 
 
 ### VARIABLES: ##############################
@@ -92,7 +92,7 @@ lastone() {
 			VMSTATE=$(virsh --connect qemu:///system domstate $LASTONE )
                         echo -en "\e[0K\r Shutting down the $LASTONE [PROCESSING   ]"
                         if [ "$VMSTATE" == "running" ]; then
-                                virsh --connect qemu:///system shutdown $ACTIVEVM > /dev/null
+                                virsh --connect qemu:///system shutdown $LASTONE > /dev/null
                                 sleep 0.5
                                 echo -en "\033[4D.  ]"
                                 sleep 0.5
@@ -107,8 +107,8 @@ lastone() {
                         fi
                 done
                 if [ "$VMSTATE" == "running" ]; then
-                        virsh --connect qemu:///system destroy $ACTIVEVM > /dev/null
-                        echo -e "\e[0K\r Shutting down the $ACTIVEVM [FORCED]        "
+                        virsh --connect qemu:///system destroy $LASTONE > /dev/null
+                        echo -e "\e[0K\r Shutting down the $LASTONE [FORCED]        "
 			sleep 0.5
                 fi
 
