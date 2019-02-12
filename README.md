@@ -2,6 +2,7 @@
 ```
 shut [OPTIONS...]
 ```
+  
 ##### OPTIONS:
 ```
 If there is no option provided, system will be shutdown
